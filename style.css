@@ -25,6 +25,24 @@ body {
   color: black;
 }
 
+.favorable {
+  background-color: rgb(101, 224, 52);
+  color: white;
+
+}
+
+.moderate {
+  background-color: rgb(220, 157, 20);
+  color: white;
+
+}
+
+.severe {
+  background-color: rgb(221, 43, 30);
+  color: white;
+
+}
+
 .topnav a.active {
   background-color: #2196F3;
   color: white;

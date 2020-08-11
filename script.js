@@ -9,12 +9,35 @@ $("#myCity").on("click", function (event) {
 
     // Here we grab the text from the input box
     var citySearch = $("#myCitySearch").val();
+    if (citySearch != null) {
+        var tempData = JSON.parse(localStorage.getItem(citySearch)) || [];
+        var userData = citySearch
+        tempData.push(userData);
+        localStorage.setItem('city', JSON.stringify(tempData));
+        location.reload
+        console.log(localStorage.city)
+        var recentCity = localStorage.city
+        for (let i = 0; i < tempData.length; i++) {
+        var recentCityDiv = $('<p>')
+        var recentCitySearch = $('<p>').text(recentCity)
+        //$('#localcity').val(description)
+        recentCityDiv.append(recentCitySearch)
+        $("#localCity").append(recentCityDiv)
+    }
+    }
+    //recentCityDiv.append(citySearch);
+    //$("#localCity").append(recentCityDiv)
+    //return the value from localstorage as text for the clicked saveBtn's sibling element's text content
+    // var recentCity = $("<div>")
+    // $("#localCity").textContent = localStorage.getItem('city')
+    // var description = localStorage.getItem(citySearch);
+    // $('.text' + hour).val(description);
 
     // Here we construct our URL
-    var fiveDayForecast ="https://api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&appid=" + mykey;
+    var fiveDayForecast = "https://api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&appid=" + mykey;
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&APPID=" + mykey;
     var cityQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&APPID=" + mykey;
-    
+
     $.ajax({
         url: fiveDayForecast,
         method: "GET"
@@ -24,12 +47,15 @@ $("#myCity").on("click", function (event) {
 
             for (let i = 0; i < response.list.length; i += 8) {
                 console.log(response.list[i])
-                //var fiveDayDay = $("<p>").text(response.list[i]);
-                // $(".fiveDay").text("UV Index: " + fiveDayDay);
-                // console.log("UV Index: " + response.value);
-                // //fiveDayDiv.append(fiveDayDay);
-                // $("#fiveday").append(fiveDayDiv);
-
+                var fiveDayDiv = $("<div>")
+                var fiveDayDate = $('<div>').text(response.list[i].dt_txt)
+                var fiveDayHumidity = $("<p>").text(response.list[i].main.humidity);
+                var tempF = (response.list[i].main.temp - 273.15) * 1.80 + 32;
+                var fiveDayTemperature = $("<p>").text(tempF.toFixed(2) + " F");
+                var icon = response.list[i].weather[0].icon;
+                var fiveDayIcon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + icon + "@2x.png");
+                fiveDayDiv.append(fiveDayDate, fiveDayHumidity, fiveDayTemperature, fiveDayIcon);
+                $("#myWeatherResult2").append(fiveDayDiv)
             }
 
             // Log the queryURL
@@ -37,7 +63,7 @@ $("#myCity").on("click", function (event) {
 
             // Log the resulting object
             console.log(response);
-        
+
         })
     $.ajax({
         url: queryURL,
@@ -61,7 +87,7 @@ $("#myCity").on("click", function (event) {
             $(".humidity").text("Humidity: " + response.main.humidity);
             var icon = response.weather[0].icon;
             console.log(icon)
-            $(".weather").attr("src","http://openweathermap.org/img/wn/" + icon + "@2x.png");
+            $(".weather").attr("src", "http://openweathermap.org/img/wn/" + icon + "@2x.png");
 
             // Convert the temp to fahrenheit
             var tempF = (response.main.temp - 273.15) * 1.80 + 32;
@@ -75,55 +101,55 @@ $("#myCity").on("click", function (event) {
             console.log("Humidity: " + response.main.humidity);
             console.log("Temperature (F): " + tempF);
         })
-        $.ajax({
-            url: cityQueryURL,
-            method: "GET"
-        })
-    
-            .then(function (response) {
-    
-                // Log the queryURL
-                console.log(cityQueryURL);
-    
-                // Log the resulting object
-                console.log(response);
-    
-                // Transfer content to HTML
-                // $(".lat").text("lat: " + response.coord.lat);
-                var lat = response.city.coord.lat
-                var lon = response.city.coord.lon
-                //return (lat)
-    
-                console.log("lat: " + response.city.coord.lat);
-                console.log("lon: " + response.city.coord.lon);
-                var queryURLUV = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&APPID=" + mykey;
     $.ajax({
-        url: queryURLUV,
+        url: cityQueryURL,
         method: "GET"
     })
 
         .then(function (response) {
 
             // Log the queryURL
-            console.log(queryURLUV);
+            console.log(cityQueryURL);
 
             // Log the resulting object
             console.log(response);
 
             // Transfer content to HTML
-            var date = response.date_iso
-            $(".date").text("The Weather for today, " + date);
-            var uv = response.value
-            $(".uvIndex").text("UV Index: " + uv);
-            console.log("UV Index: " + uv);
-            if (uv < 4) {
-                $(".uvIndex").addClass("favorable")
-            } else if (8 > uv > 4) {
-                $(".uvIndex").addClass("moderate")
-            } else if (uv > 8) {
-                $(".uvIndex").addClass("severe")
-            }
-        })
+            // $(".lat").text("lat: " + response.coord.lat);
+            var lat = response.city.coord.lat
+            var lon = response.city.coord.lon
+            //return (lat)
+
+            console.log("lat: " + response.city.coord.lat);
+            console.log("lon: " + response.city.coord.lon);
+            var queryURLUV = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&APPID=" + mykey;
+            $.ajax({
+                url: queryURLUV,
+                method: "GET"
             })
+
+                .then(function (response) {
+
+                    // Log the queryURL
+                    console.log(queryURLUV);
+
+                    // Log the resulting object
+                    console.log(response);
+
+                    // Transfer content to HTML
+                    var date = response.date_iso
+                    $(".date").text("The Weather for today, " + date);
+                    var uv = response.value
+                    $(".uvIndex").text("UV Index: " + uv);
+                    console.log("UV Index: " + uv);
+                    if (uv < 4) {
+                        $(".uvIndex").addClass("favorable")
+                    } else if (8 > uv > 4) {
+                        $(".uvIndex").addClass("moderate")
+                    } else if (uv > 8) {
+                        $(".uvIndex").addClass("severe")
+                    }
+                })
+        })
 
 });

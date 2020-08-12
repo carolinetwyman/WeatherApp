@@ -10,20 +10,20 @@ $("#myCity").on("click", function (event) {
     // Here we grab the text from the input box
     var citySearch = $("#myCitySearch").val();
     if (citySearch != null) {
-        var tempData = JSON.parse(localStorage.getItem(citySearch)) || [];
+        var tempData = JSON.parse(localStorage.getItem("city")) || [];
         var userData = citySearch
         tempData.push(userData);
         localStorage.setItem('city', JSON.stringify(tempData));
         location.reload
         console.log(localStorage.city)
         var recentCity = localStorage.city
-        for (let i = 0; i < tempData.length; i++) {
+        //for (let i = 0; i < tempData.length; i++) {
         var recentCityDiv = $('<p>')
         var recentCitySearch = $('<p>').text(recentCity)
         //$('#localcity').val(description)
         recentCityDiv.append(recentCitySearch)
         $("#localCity").append(recentCityDiv)
-    }
+    //}
     }
     //recentCityDiv.append(citySearch);
     //$("#localCity").append(recentCityDiv)
@@ -47,9 +47,9 @@ $("#myCity").on("click", function (event) {
 
             for (let i = 0; i < response.list.length; i += 8) {
                 console.log(response.list[i])
-                var fiveDayDiv = $("<div>")
+                var fiveDayDiv = $("<div>").addClass("tile")
                 var fiveDayDate = $('<div>').text(response.list[i].dt_txt)
-                var fiveDayHumidity = $("<p>").text(response.list[i].main.humidity);
+                var fiveDayHumidity = $("<p>").text("Humidity: " + response.list[i].main.humidity);
                 var tempF = (response.list[i].main.temp - 273.15) * 1.80 + 32;
                 var fiveDayTemperature = $("<p>").text(tempF.toFixed(2) + " F");
                 var icon = response.list[i].weather[0].icon;

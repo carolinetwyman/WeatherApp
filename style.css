@@ -26,20 +26,17 @@ body {
 }
 
 .favorable {
-  background-color: rgb(101, 224, 52);
-  color: white;
+  color: rgb(99, 238, 81);
 
 }
 
 .moderate {
-  background-color: rgb(220, 157, 20);
-  color: white;
+  color: rgb(255, 255, 255);
 
 }
 
 .severe {
-  background-color: rgb(221, 43, 30);
-  color: white;
+  color: rgb(124, 16, 16);
 
 }
 

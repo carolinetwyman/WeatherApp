@@ -47,7 +47,8 @@ $("#myCity").on("click", function (event) {
 
             for (let i = 0; i < response.list.length; i += 8) {
                 console.log(response.list[i])
-                var fiveDayDiv = $("<div>").addClass("tile")
+                var fiveDayDiv = $("<div>").addClass("tile is-parent")
+                var fiveDayDiv = $("<div>").addClass("tile is-child notification has-background-info-light")
                 var fiveDayDate = $('<div>').text(response.list[i].dt_txt)
                 var fiveDayHumidity = $("<p>").text("Humidity: " + response.list[i].main.humidity);
                 var tempF = (response.list[i].main.temp - 273.15) * 1.80 + 32;
@@ -143,11 +144,11 @@ $("#myCity").on("click", function (event) {
                     $(".uvIndex").text("UV Index: " + uv);
                     console.log("UV Index: " + uv);
                     if (uv < 4) {
-                        $(".uvIndex").addClass("favorable")
+                        $(".uvIndex").addClass("has-text-success")
                     } else if (8 > uv > 4) {
-                        $(".uvIndex").addClass("moderate")
+                        $(".uvIndex").addClass("has-text-warning")
                     } else if (uv > 8) {
-                        $(".uvIndex").addClass("severe")
+                        $(".uvIndex").addClass("has-text-danger")
                     }
                 })
         })

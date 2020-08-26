@@ -1,4 +1,4 @@
-Type in your homwtown and see the current weather conditions. 
+Type in your hometown and see the current weather conditions. 
 
 <img src="images/Search.png">
 
